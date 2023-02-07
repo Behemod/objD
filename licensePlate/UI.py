@@ -69,7 +69,7 @@ class Window:
 
     def display(self):
         if self.img_src_path == None:  # Prediction without selecting an image
-            self.can_pred1.create_text(32, 15, text='Please select a picture', anchor='nw', font=('黑体', 28))
+            self.can_pred1.create_text(32, 15, text='Please select a picture', anchor='nw', font=('黑体', 18))
         else:
             img_src = cv2.imdecode(np.fromfile(self.img_src_path, dtype=np.uint8), -1)  # When reading from a Chinese path, use
             h, w = img_src.shape[0], img_src.shape[1]
@@ -102,7 +102,7 @@ class Window:
                         self.can_pred3.create_text(40, 15, text=lic_pred[1], anchor='nw', font=('黑体', 28))
 
             else:  # Lic_pred is empty, indicating that it has not been recognized
-                self.can_pred1.create_text(47, 15, text='failed to recognize', anchor='nw', font=('黑体', 27))
+                self.can_pred1.create_text(47, 15, text='failed to recognize', anchor='nw', font=('黑体', 18))
 
     def clear(self):
         self.can_src.delete('all')
@@ -121,7 +121,7 @@ class Window:
 
 if __name__ == '__main__':
     win = Tk()
-    ww = 1000  # Window width setting 1000
+    ww = 1400  # Window width setting 1000
     wh = 600  # Window height setting 600
     Window(win, ww, wh)
     win.protocol("WM_DELETE_WINDOW", Window.closeEvent)
