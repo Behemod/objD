@@ -21,34 +21,34 @@ class Window:
         self.img_src_path = None
 
         self.label_src = Label(self.win, text='original image:', font=('微软雅黑', 13)).place(x=0, y=0)
-        self.label_lic1 = Label(self.win, text='License plate area 1:', font=('微软雅黑', 13)).place(x=615, y=0)
-        self.label_pred1 = Label(self.win, text='Recognition result 1:', font=('微软雅黑', 13)).place(x=615, y=85)
-        self.label_lic2 = Label(self.win, text='License plate area 2:', font=('微软雅黑', 13)).place(x=615, y=180)
-        self.label_pred2 = Label(self.win, text='Recognition result 2:', font=('微软雅黑', 13)).place(x=615, y=265)
-        self.label_lic3 = Label(self.win, text='License plate area 3:', font=('微软雅黑', 13)).place(x=615, y=360)
-        self.label_pred3 = Label(self.win, text='Recognition result 3:', font=('微软雅黑', 13)).place(x=615, y=445)
+        self.label_lic1 = Label(self.win, text='License plate area 1:', font=('微软雅黑', 13)).place(x=700, y=0)
+        self.label_pred1 = Label(self.win, text='Recognition result 1:', font=('微软雅黑', 13)).place(x=700, y=85)
+        self.label_lic2 = Label(self.win, text='License plate area 2:', font=('微软雅黑', 13)).place(x=700, y=180)
+        self.label_pred2 = Label(self.win, text='Recognition result 2:', font=('微软雅黑', 13)).place(x=700, y=265)
+        self.label_lic3 = Label(self.win, text='License plate area 3:', font=('微软雅黑', 13)).place(x=700, y=360)
+        self.label_pred3 = Label(self.win, text='Recognition result 3:', font=('微软雅黑', 13)).place(x=700, y=445)
 
         self.can_src = Canvas(self.win, width=512, height=512, bg='white', relief='solid', borderwidth=1)  # original canvas
-        self.can_src.place(x=50, y=0)
+        self.can_src.place(x=130, y=0)
         self.can_lic1 = Canvas(self.win, width=245, height=85, bg='white', relief='solid', borderwidth=1)  # License plate area 1 canvas
-        self.can_lic1.place(x=710, y=0)
+        self.can_lic1.place(x=880, y=0)
         self.can_pred1 = Canvas(self.win, width=245, height=65, bg='white', relief='solid', borderwidth=1)  # License plate recognition 1 canvas
-        self.can_pred1.place(x=710, y=90)
+        self.can_pred1.place(x=880, y=90)
         self.can_lic2 = Canvas(self.win, width=245, height=85, bg='white', relief='solid', borderwidth=1)  # License Plate Area 2 Canvas
-        self.can_lic2.place(x=710, y=175)
+        self.can_lic2.place(x=880, y=175)
         self.can_pred2 = Canvas(self.win, width=245, height=65, bg='white', relief='solid', borderwidth=1)  # License plate recognition 2 canvas
-        self.can_pred2.place(x=710, y=265)
+        self.can_pred2.place(x=880, y=265)
         self.can_lic3 = Canvas(self.win, width=245, height=85, bg='white', relief='solid', borderwidth=1)  # License plate area 3 canvas
-        self.can_lic3.place(x=710, y=350)
+        self.can_lic3.place(x=880, y=350)
         self.can_pred3 = Canvas(self.win, width=245, height=65, bg='white', relief='solid', borderwidth=1)  # License plate recognition 3 canvas
-        self.can_pred3.place(x=710, y=440)
+        self.can_pred3.place(x=880, y=440)
 
-        self.button1 = Button(self.win, text='Select a document', width=10, height=1, command=self.load_show_img)  # select file button
+        self.button1 = Button(self.win, text='Select a document', width=12, height=1, command=self.load_show_img)  # select file button
         self.button1.place(x=680, y=wh - 30)
-        self.button2 = Button(self.win, text='Recognize license plate', width=10, height=1, command=self.display)  # Recognition license plate button
-        self.button2.place(x=780, y=wh - 30)
-        self.button3 = Button(self.win, text='clear all', width=10, height=1, command=self.clear)  # clear all buttons
-        self.button3.place(x=880, y=wh - 30)
+        self.button2 = Button(self.win, text='Recognize license plate', width=16, height=1, command=self.display)  # Recognition license plate button
+        self.button2.place(x=820, y=wh - 30)
+        self.button3 = Button(self.win, text='clear all', width=6, height=1, command=self.clear)  # clear all buttons
+        self.button3.place(x=1000, y=wh - 30)
         self.unet = keras.models.load_model('licensePlate/unet.h5')
         self.cnn = keras.models.load_model('licensePlate/cnn.h5')
         print('Starting up, please wait...')
