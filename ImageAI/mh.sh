@@ -2,4 +2,4 @@
 
 #History module
 
-pip install -e git+https://github.com/danielgatis/rembg#egg=my_rembg
+pip install -e git+https://github.com/danielgatis/rembg#egg=rembg
