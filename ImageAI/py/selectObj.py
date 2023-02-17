@@ -1,25 +1,37 @@
 import cv2
+import numpy as np
 
-# Load input image
-image = cv2.imread("ImageAI/mytest/10212e29-68f3-4e03-8c72-bd7e06f0ece1.jpeg")
+# Load pre-trained Mask R-CNN model
+net = cv2.dnn.readNetFromTensorflow('ImageAI/mytest/mask_rcnn_inception_v2_coco_2018_01_28/frozen_inference_graph.pb')
 
-# Convert image to grayscale
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# Read input image
+image = cv2.imread('ImageAI/mytest/1021801.jpg')
 
-# Threshold image to obtain binary image
-thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+# Prepare input blob for neural network
+blob = cv2.dnn.blobFromImage(image, swapRB=True, crop=False)
 
-# Find contours in the binary image
-contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# Set input and output layers
+net.setInput(cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True, crop=False))
+output_layer_names = ['detection_boxes', 'detection_scores', 'detection_classes', 'num_detections']
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-# Check if only one contour was found
-if len(contours) == 1:
-    # Draw bounding box around contour
-    x, y, w, h = cv2.boundingRect(contours[0])
-    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    cv2.putText(image, "Foreground", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+# Forward pass through neural network to get output
+outputs = net.forward(output_layer_names)
 
-# Display labeled image
-cv2.imshow("Labeled Image", image)
+# Extract segmentation mask from neural network output
+mask = outputs[:, 1, :, :]
+
+# Threshold mask to get binary segmentation mask
+mask = cv2.threshold(mask, 0.5, 255, cv2.THRESH_BINARY)[1]
+
+# Invert mask to get background instead of object
+mask = cv2.bitwise_not(mask)
+
+# Apply mask to input image to remove background
+result = cv2.bitwise_and(image, image, mask=mask)
+
+# Display result
+cv2.imshow("Result", result)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
