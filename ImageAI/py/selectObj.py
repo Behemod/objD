@@ -1,37 +1,45 @@
 import cv2
 import numpy as np
 
-# Load pre-trained Mask R-CNN model
-net = cv2.dnn.readNetFromTensorflow('ImageAI/mytest/mask_rcnn_inception_v2_coco_2018_01_28/frozen_inference_graph.pb')
-
 # Read input image
 image = cv2.imread('ImageAI/mytest/1021801.jpg')
 
-# Prepare input blob for neural network
-blob = cv2.dnn.blobFromImage(image, swapRB=True, crop=False)
+# Convert input image to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# Set input and output layers
-net.setInput(cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True, crop=False))
-output_layer_names = ['detection_boxes', 'detection_scores', 'detection_classes', 'num_detections']
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+# Apply smoothing to grayscale image
+gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
-# Forward pass through neural network to get output
-outputs = net.forward(output_layer_names)
+# Apply adaptive thresholding
+thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 
-# Extract segmentation mask from neural network output
-mask = outputs[:, 1, :, :]
+# Apply morphological opening to remove small holes
+kernel = np.ones((3,3), np.uint8)
+opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
 
-# Threshold mask to get binary segmentation mask
-mask = cv2.threshold(mask, 0.5, 255, cv2.THRESH_BINARY)[1]
+# Find contours in the thresholded image
+contours, hierarchy = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-# Invert mask to get background instead of object
-mask = cv2.bitwise_not(mask)
+# Iterate over contours and filter out those with area less than a threshold
+filtered_contours = []
+for contour in contours:
+    area = cv2.contourArea(contour)
+    if area > 1000:
+        filtered_contours.append(contour)
 
-# Apply mask to input image to remove background
-result = cv2.bitwise_and(image, image, mask=mask)
+# Draw filtered contours on original image
+for contour in filtered_contours:
+    # Approximate contour to reduce the number of points
+    approx = cv2.approxPolyDP(contour, 0.0001*cv2.arcLength(contour, True), True)
+    cv2.drawContours(image, [approx], 0, (0, 255, 0), 3)
 
-# Display result
-cv2.imshow("Result", result)
+# Draw filtered contours on original image
+for contour in filtered_contours:
+    x, y, w, h = cv2.boundingRect(contour)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.putText(image, "Foreground", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+# Display labeled image
+cv2.imshow("Labeled Image", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
