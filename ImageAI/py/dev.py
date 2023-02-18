@@ -4,10 +4,10 @@ import numpy as np
 
 # Load input image
 input_path = 'ImageAI/mytest/1021801.jpg'
-img = cv2.imread(input_path)
+input_img = cv2.imread(input_path)
 
 # Remove image background
-output_img = rembg.bg.remove(img)
+output_img = rembg.bg.remove(input_img)
 
 # RGBA converting to BGR
 img = cv2.cvtColor(output_img, cv2.COLOR_RGBA2BGR)
@@ -29,7 +29,7 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
 # Apply adaptive thresholding
-thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 21, 2)
 
 # Apply morphological opening to remove small holes
 kernel = np.ones((2,2), np.uint8)
@@ -54,11 +54,11 @@ for contour in contours:
 # Draw filtered contours on original image
 for contour in filtered_contours:
     x, y, w, h = cv2.boundingRect(contour)
-    cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    cv2.putText(img, "Foreground", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+    cv2.rectangle(input_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.putText(input_img, "Foreground", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
 
 # Display output image with label
-cv2.imshow('Output', img)
+cv2.imshow('Output', input_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
