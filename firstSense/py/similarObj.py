@@ -7,8 +7,8 @@ from matplotlib import pyplot as plt
 
 MIN_MATCH_COUNT = 10
 
-img1 = cv.imread('ImageAI/mytest/OWM/scrot.png')    # queryImage
-img2 = cv.imread('ImageAI/mytest/OWM/IMG_9904.JPG') # trainImage
+img1 = cv.imread('firstSense/mytest/OWM/scrot.png')    # queryImage
+img2 = cv.imread('firstSense/mytest/OWM/IMG_9904.JPG') # trainImage
 
 # Initiate SIFT detector
 sift = cv.SIFT_create()

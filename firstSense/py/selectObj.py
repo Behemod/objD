@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Read input image
-image = cv2.imread('ImageAI/mytest/1021801.jpg')
+image = cv2.imread('firstSense/mytest/1021801.jpg')
 
 # Convert input image to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
