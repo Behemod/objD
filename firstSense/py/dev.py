@@ -2,7 +2,7 @@ import cv2
 import rembg
 
 # Load input image
-input_path = 'firstSense/mytest/1021807.jpg'
+input_path = 'firstSense/res/1021807.jpg'
 input_img = cv2.imread(input_path)
 
 # Remove image background

@@ -172,4 +172,4 @@ experiment
 # User addition
 *.pt
 *.pth
-mytest/
+res/
