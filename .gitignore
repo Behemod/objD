@@ -173,3 +173,4 @@ experiment
 *.pt
 *.pth
 res/
+data/
