@@ -8,7 +8,7 @@
     $$A_n=g_{any}(Z_n)$$
     Where $n$ is number of hidden layer, $W_n$ is weight vector, $b_n$ is bias vector, $Z_n$ is linear combination of $A_{n-1}$
 
-- &emsp;&emsp;Backward propagation:
+- &emsp;&emsp;**TODO:** Backward propagation:
     $$$$
 
 
@@ -20,5 +20,8 @@
 
 &emsp; Makes all thing non-linear
 
+## TODO:
 
+### &emsp;**Loss functions:**
 ### &emsp;**Optimization:**
+### &emsp;**Loss functions:**
