@@ -174,3 +174,4 @@ experiment
 *.pth
 res/
 data/
+results/
